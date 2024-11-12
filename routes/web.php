@@ -19,7 +19,10 @@ Route::middleware('auth')->group(function(){
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index'); // 글목록
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show'); // 글보기
+
+Route::get('/posts/{post}', [PostController::class, 'show'])
+        ->middleware('custom-post-mid')
+        ->name('posts.show'); // 글보기
 
 Route::middleware('guest')->group(function(){
     Route::get('/register', [RegisterUserController::class, 'register'])->name('register');
