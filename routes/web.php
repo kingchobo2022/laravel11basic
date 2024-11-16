@@ -12,7 +12,9 @@ Route::view('/', 'welcome');
 Route::middleware('auth')->group(function(){
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create'); // 글작성 폼    
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); // 글등록처리
-    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit'); // 글수정 폼
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
+        ->can('update', 'post')
+        ->name('posts.edit'); // 글수정 폼
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update'); // 글수정처리
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy'); // 삭제처리
     Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');

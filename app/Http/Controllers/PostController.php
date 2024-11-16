@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 { 
@@ -56,6 +57,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // Gate::authorize('update', $post); // PostPolicy 클래스의 update 메서드호출
         return view('posts.edit', compact('post'));
     }
 
@@ -69,7 +71,7 @@ class PostController extends Controller
             'content' => ['required', 'min:5'],
         ]);
         $post->update($validated);
-        return to_route('posts.index');
+        return to_route('posts.show', ['post' => $post]);
     }
 
     /**
@@ -77,6 +79,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
         $post->delete();
         return to_route('posts.index');
     }
