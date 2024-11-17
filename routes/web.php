@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterUserController;
@@ -18,17 +19,14 @@ Route::middleware('auth')->group(function(){
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update'); // 글수정처리
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy'); // 삭제처리
     Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');
-    Route::get('/admin', function(){
-        return '여기는 관리자 영역입니다.<br>Admin 계정으로 로그인 하셨습니다.';
-    })
-    ->can('is-admin')
-    ->name('admin');
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->middleware('is-admin')
+        ->name('admin');
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index'); // 글목록
 
 Route::get('/posts/{post}', [PostController::class, 'show'])
-        ->middleware('custom-post-mid')
         ->name('posts.show'); // 글보기
 
 Route::middleware('guest')->group(function(){
