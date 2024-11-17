@@ -14,22 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-        Lists::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User1',
-        //     'email' => 'test1@example.com',
-        // ]);
-        // Lists::create([
-        //     'subject' => 'Good Morning',
-        //     'email' => 'good@gmail.com',
-        //     'context' => 'Good Content Life is too short',
-        // ]);
-        // Lists::create([
-        //     'subject' => 'Good Afternoon',
-        //     'email' => 'after@gmail.com',
-        //     'context' => 'Bad Content Art is too long',
-        // ]);
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@email.com',
+            'is_admin' => true,
+        ]);
     }
 }

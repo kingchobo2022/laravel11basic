@@ -9,6 +9,18 @@ use Illuminate\Auth\Access\Response;
 class PostPolicy
 {
     /**
+     * Perform pre-authorization checks.
+     */
+    public function before(User $user, string $ability): bool
+    {
+        if ($user->is_admin) {
+            return true;
+        }
+    
+        return false;
+    }
+
+    /**
      * Determine whether the user can view any models.
      * 사용자가 모든 포스트를 조회할 수 있는지 확인합니다.
      */
