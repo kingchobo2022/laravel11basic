@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\LoginUserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterUserController;
@@ -19,9 +20,14 @@ Route::middleware('auth')->group(function(){
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update'); // 글수정처리
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy'); // 삭제처리
     Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');
-    Route::get('/admin', [AdminController::class, 'index'])
-        ->middleware('is-admin')
-        ->name('admin');
+
+    Route::middleware('is-admin')->group(function(){
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+        Route::get('/admin/posts/{post}/edit', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
+        Route::put('/admin/posts/{post}', [AdminPostController::class, 'update'])->name('admin.posts.update');
+        Route::delete('/admin/posts/{post}', [AdminPostController::class, 'destroy'])->name('admin.posts.destroy');
+    });
+
 });
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index'); // 글목록
