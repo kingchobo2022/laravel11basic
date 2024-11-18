@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
@@ -72,7 +73,14 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'min:3', 'max:200'],
             'content' => ['required', 'min:5'],
+            'photo' => ['sometimes', 'image'],
         ]);
+
+        if ($request->hasFile('photo')) {
+            File::delete(storage_path('app/public/'. $post->photo));
+            $validated['photo'] = $request->file('photo')->store('photos');
+        }
+
         $post->update($validated);
         return to_route('posts.show', ['post' => $post]);
     }
@@ -83,6 +91,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         Gate::authorize('delete', $post);
+        File::delete(storage_path('app/public/'. $post->photo));
         $post->delete();
         return to_route('posts.index');
     }
