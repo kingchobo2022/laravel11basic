@@ -36,7 +36,10 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'min:3', 'max:255'],
             'content' => ['required', 'min:5'],
+            'photo' => ['required', 'image'],
         ]);
+
+        $validated['photo'] = $request->file('photo')->store('photos');
 
         auth()->user()->posts()->create($validated);
 

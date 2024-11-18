@@ -18,6 +18,7 @@ return new class extends Migration
             // posts 테이블에 user_id 컬럼추가, foregin key 설정, 유저가 삭제되면, 작성한 게시물도 자동 삭제
             $table->string('title');
             $table->text('content');
+            $table->string('photo');
             $table->timestamps();
         });
     }
