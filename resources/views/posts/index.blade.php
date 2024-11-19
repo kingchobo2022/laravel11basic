@@ -25,5 +25,8 @@
         @endforeach
     
     </div>
+    <div class="mt-6 grid grid-cols-3">
+        {{ $posts->links() }}
+    </div>
 
 </x-layout> 
