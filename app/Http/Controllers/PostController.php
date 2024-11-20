@@ -44,7 +44,7 @@ class PostController extends Controller
 
         auth()->user()->posts()->create($validated);
 
-        return to_route('posts.index');
+        return to_route('posts.index')->with('message', '글이 성공적으로 등록되었습니다.');
     }
 
     /**
@@ -82,7 +82,7 @@ class PostController extends Controller
         }
 
         $post->update($validated);
-        return to_route('posts.show', ['post' => $post]);
+        return to_route('posts.show', ['post' => $post])->with('message', '글이 성공적으로 수정되었습니다.');
     }
 
     /**
