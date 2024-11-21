@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,9 +13,18 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::paginate(3);
+        // if (Cache::has('posts'. $request->get('page', 1))) {
+        //     $posts = Cache::get('posts'.$request->get('page', 1));
+        // } else {
+        //     $posts = Post::paginate(3);
+        //     Cache::put('posts'. $request->get('page', 1), $posts, 30);
+        // }
+        $posts = Cache::remember('posts'. $request->get('page', 1), 30, function(){
+            return Post::paginate(3);
+        });
+        
         return view('posts.index', compact( 'posts')); // ['posts' => $posts]
     }
 
